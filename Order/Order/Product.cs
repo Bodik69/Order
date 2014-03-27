@@ -81,6 +81,38 @@ namespace PMI21_TeachingPractice
         }
 
         /// <summary>
+        /// Gets or sets price of product
+        /// </summary>
+        public double Price
+        {
+            get
+            {
+                return this.price;
+            }
+
+            set
+            {
+                this.price = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets name of product
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                this.name = value;
+            }
+        }
+
+        /// <summary>
         /// Sets fields for object from Xml file.
         /// </summary>
         /// <param name="reader">Reader module of file with data.</param>
@@ -104,6 +136,39 @@ namespace PMI21_TeachingPractice
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets price by id
+        /// </summary>
+        /// <param name="id"> id of searching product</param>
+        /// <param name="reader">fie to read</param>
+        /// <returns>price of product with searching id</returns>
+        public double PriceById(int id, XmlTextReader reader)
+        {
+            while (reader.Read())
+            {
+                if (reader.Name == "id")
+                {
+                    this.id = reader.ReadElementContentAsInt();
+                }
+
+                if (reader.Name == "name")
+                {
+                    this.name = reader.ReadElementContentAsString();
+                }
+
+                if (reader.Name == "price")
+                {
+                    this.price = reader.ReadElementContentAsDouble();
+                    if (id == this.id)
+                    {
+                        return this.price;
+                    }
+                }
+            }
+
+            return 0.0;
         }
 
         /// <summary>
@@ -147,9 +212,9 @@ namespace PMI21_TeachingPractice
         /// </summary>
         public void Write()
         {
-            Console.Write(this.id);
+            Console.Write("{0} ", this.id);
             Console.Write(this.name);
-            Console.Write(this.price);
+            Console.Write("{0} ", this.price);
         }
     }
 }

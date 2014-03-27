@@ -29,18 +29,25 @@
                 orders[i].Write();
             }
 
-            XmlWriter fs = XmlWriter.Create("Result.xml");
-            fs.WriteStartElement("head");
-            fs.WriteFullEndElement();
-            fs.Close();
-            XmlDocument document = new XmlDocument();
-            document.Load("Result.xml");
-            XmlElement root = document.DocumentElement;
-            for (int i = 0; i < orders.Count; i++)
+            string curFile = @"Result.xml";
+            if (!File.Exists(curFile))
             {
-                orders[i].Write(document);
+                XmlWriter fs = XmlWriter.Create(curFile);
+                fs.WriteStartElement("head");
+                fs.WriteFullEndElement();
+                fs.Close();
             }
 
+            XmlDocument document = new XmlDocument();
+            document.Load(curFile);
+            XmlElement root = document.DocumentElement;
+            orders[0].AddProduct(1);
+            orders[0].RemoveProduct(1);
+            for (int i = 0; i < orders.Count; i++)
+            {
+                orders[i].SaveOrder(document);
+            }
+            
             document.Save("Result.xml");
             Console.ReadKey();
         }
