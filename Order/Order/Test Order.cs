@@ -41,14 +41,16 @@
             XmlDocument document = new XmlDocument();
             document.Load(curFile);
             XmlElement root = document.DocumentElement;
-            orders[0].AddProduct(1);
-            orders[0].RemoveProduct(1);
+            //orders[0].AddProduct(1);
+            //orders[0].RemoveProduct(1);
             for (int i = 0; i < orders.Count; i++)
             {
                 orders[i].SaveOrder(document);
             }
             
             document.Save("Result.xml");
+            Order a = new Order();
+            a.ReturnOrderById(1);
             Console.ReadKey();
         }
     }

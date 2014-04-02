@@ -118,12 +118,12 @@ namespace PMI21_TeachingPractice
         /// Adds product to order
         /// </summary>
         /// <param name="id">id of product</param>
-        public void AddProduct(int id)
+        public void AddProduct(int identifier)
         {
             Product temp = new Product();
             XmlTextReader reader = new XmlTextReader(@"XMLFile1.xml");
-            temp.Id = id;
-            temp.Price = temp.PriceById(id, reader);
+            temp.Price = temp.PriceById(identifier, reader);
+            temp.Id = identifier;
             this.products.Add(temp);
         }
 
@@ -175,6 +175,44 @@ namespace PMI21_TeachingPractice
             {
                 ((Product)this.products[i]).WriteXml(doc, newID);
             }
+        }
+
+        /// <summary>
+        /// gets order by id
+        /// </summary>
+        /// <param name="Id"> id of order</param>
+        /// <returns>order with id</returns>
+        public Order ReturnOrderById(int Id)
+        {
+            int id = -1;
+            int prodID = 0;
+            XmlTextReader raeder = new XmlTextReader("Result.xml");
+            Order tempOrder = new Order();
+            while (raeder.Read())
+            {
+                if (raeder.Name == "userId" && raeder.HasAttributes)
+                {
+                    id = Convert.ToInt32(raeder.GetAttribute("name_id"));
+                    if (id == Id)
+                    {
+                        while (raeder.Read())
+                        {
+                            if (raeder.Name == "id")
+                            {
+                                prodID = raeder.ReadElementContentAsInt();
+                                
+                                tempOrder.AddProduct(prodID);
+                            }
+
+                            if (raeder.Name == "userId")
+                            {
+                                return tempOrder;
+                            }
+                        }
+                    }
+                }
+            }
+            return tempOrder;
         }
     }
 }
